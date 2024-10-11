@@ -43,6 +43,12 @@ function Home() {
   useEffect(() => {
     if (showScanner) {
       const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+
+      const handleScan = (decodedText) => {
+        // Your handleScan logic here
+        console.log(decodedText);
+      };
+
       scanner.render(
         (decodedText) => handleScan(decodedText),
         (error) => console.log(error)
@@ -52,7 +58,7 @@ function Home() {
         scanner.clear();
       };
     }
-  }, [showScanner, handleScan]);
+  }, [showScanner]);
 
   return (
     <div style={styles.container}>
