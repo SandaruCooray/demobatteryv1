@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Icons for navigation
@@ -23,16 +23,19 @@ function Home() {
   const [manualSN, setManualSN] = useState("");
   const navigate = useNavigate();
 
-  const handleScan = (data) => {
-    if (data) {
-      let temp = data.split("/").pop();
-      console.log({ temp });
+  // Memoize handleScan with useCallback to avoid re-creation on every render
+  const handleScan = useCallback(
+    (data) => {
+      if (data) {
+        let temp = data.split("/").pop();
+        console.log({ temp });
 
-      // alert(temp);
-      const serialNumber = temp; // QR scanned data
-      navigate(`/sn/${serialNumber}`); // Redirect with SN
-    }
-  };
+        const serialNumber = temp; // QR scanned data
+        navigate(`/sn/${serialNumber}`); // Redirect with SN
+      }
+    },
+    [navigate]
+  ); // Only recreate if `navigate` changes
 
   const handleManualSubmit = () => {
     if (manualSN) {
@@ -44,11 +47,7 @@ function Home() {
     if (showScanner) {
       const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
 
-      const handleScan = (decodedText) => {
-        // Your handleScan logic here
-        console.log(decodedText);
-      };
-
+      // Use the memoized handleScan
       scanner.render(
         (decodedText) => handleScan(decodedText),
         (error) => console.log(error)
@@ -58,7 +57,7 @@ function Home() {
         scanner.clear();
       };
     }
-  }, [showScanner]);
+  }, [showScanner, handleScan]); // Include handleScan in the dependencies array
 
   return (
     <div style={styles.container}>
