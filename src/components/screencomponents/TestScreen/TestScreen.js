@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Icons for navigation
 import ImageZoom from "react-image-zoom";
-import Swal from "sweetalert2"; // Import SweetAlert2
 
 import { Html5QrcodeScanner } from "html5-qrcode";
 
@@ -274,45 +273,7 @@ const styles = {
 const TestScreen = () => {
   const { serialNumber } = useParams();
 
-  const [vehiclesLeft, setVehiclesLeft] = useState([]);
-  const [tab, setTab] = useState("current");
-  const [loading, setLoading] = useState(false);
-  const [cardsLoading, setCardsLoading] = useState(true);
-
   const navigate = useNavigate();
-
-  const handleTabChange = (tabName) => {
-    setTab(tabName);
-    if (tabName === "vehicles") {
-      Swal.fire({
-        title: "Loading",
-        text: "Please wait while we load the vehicle data.",
-        didOpen: () => {
-          Swal.showLoading();
-          loadAllImages().then(() => {
-            Swal.close();
-          });
-        },
-      });
-    }
-  };
-
-  const loadAllImages = () => {
-    return new Promise((resolve) => {
-      const imagePromises = vehiclesLeft.map((vehicle) => {
-        return new Promise((resolveImage) => {
-          const img = new Image();
-          img.src = vehicle.image;
-          img.onload = resolveImage;
-          img.onerror = resolveImage;
-        });
-      });
-
-      Promise.all(imagePromises).then(() => {
-        resolve(); // Resolve the promise when all images are loaded
-      });
-    });
-  };
 
   return (
     <div className="App">

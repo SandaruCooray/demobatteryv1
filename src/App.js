@@ -10,14 +10,14 @@ import EventBus from "./common/EventBus";
 import { GlobalStateProvider } from "./global/global";
 
 function App() {
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
+
 
   const [currentUser, setCurrentUser] = useState(false);
 
   const logOut = () => {
     localStorage.removeItem("user");
 
-    setShowAdminBoard(false);
+
     setCurrentUser(undefined);
   };
 
@@ -30,11 +30,7 @@ function App() {
 
         setCurrentUser(user);
 
-        if (user.isAdmin) {
-          setShowAdminBoard(true);
-        } else {
-          setShowAdminBoard(false);
-        }
+    
       }
 
       // Continue processing with the 'user' object

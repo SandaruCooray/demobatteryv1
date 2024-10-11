@@ -1,27 +1,14 @@
 //* This layout goint to wrap to aal componenets
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
-
-
 const Layout = () => {
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
-  const [currentUser, setCurrentUser] = useState(false);
-
   useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
       if (user) {
         // console.log({ user });
-
-        if (user.isAdmin) {
-          setShowAdminBoard(true);
-          setCurrentUser(false);
-        } else {
-          setShowAdminBoard(false);
-          setCurrentUser(true);
-        }
       }
 
       // Continue processing with the 'user' object
