@@ -52,7 +52,7 @@ function Home() {
         scanner.clear();
       };
     }
-  }, [showScanner]);
+  }, [showScanner, handleScan]);
 
   return (
     <div style={styles.container}>
